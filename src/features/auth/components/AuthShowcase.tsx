@@ -60,7 +60,7 @@ export function AuthShowcase() {
               <Icon name="verified" size={16} className="text-primary-container" />
             </div>
             <div className="text-headline-sm font-bold">99.98%</div>
-            <div className="mt-1 text-caption text-slate-400">Conexión Segura API PuntoRed</div>
+            <div className="mt-1 text-caption text-slate-400">Conexión Segura API ComaRed</div>
           </div>
           <div className="rounded-xl border border-surface-base/10 bg-surface-base/5 p-3.5 backdrop-blur-md">
             <div className="mb-1 flex items-center justify-between">
@@ -88,7 +88,7 @@ export function AuthShowcase() {
         </h2>
         <p className="text-body-sm leading-relaxed text-slate-300">
           Rapidez, disponibilidad e interoperabilidad con todos los operadores de Colombia (Claro,
-          Movistar, Tigo, WOM) con respaldo institucional PuntoRed.
+          Movistar, Tigo, WOM) con respaldo institucional ComaRed.
         </p>
       </div>
     </aside>

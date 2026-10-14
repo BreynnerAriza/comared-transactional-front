@@ -19,7 +19,7 @@ export default function LoginPage() {
           <footer className="mt-10 border-t border-border-subtle pt-6">
             <p className="flex items-center gap-2 text-caption text-text-secondary">
               <Icon name="verified_user" size={16} className="text-success" />
-              Red transaccional PuntoRed Colombia
+              Red transaccional ComaRed Colombia
             </p>
           </footer>
         </section>

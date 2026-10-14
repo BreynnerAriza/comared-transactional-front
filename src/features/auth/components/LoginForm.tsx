@@ -41,7 +41,7 @@ export function LoginForm() {
           leadingIcon="mail"
           type="email"
           autoComplete="email"
-          placeholder="usuario@puntored.co"
+          placeholder="usuario@gmail.com"
           autoFocus
           error={errors.email?.message}
           {...register("email", {
