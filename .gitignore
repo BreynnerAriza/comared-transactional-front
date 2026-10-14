@@ -25,3 +25,6 @@ dist-ssr
 
 # References
 references/
+
+# Docs locales
+docs/
