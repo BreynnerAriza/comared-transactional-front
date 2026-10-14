@@ -1,4 +1,4 @@
-import { Icon } from "../../../components/ui/Icon";
+import { Icon } from "../../../shared/components/ui/Icon";
 import type { Pagination } from "../types/recharge.types";
 
 interface TablePaginationProps {

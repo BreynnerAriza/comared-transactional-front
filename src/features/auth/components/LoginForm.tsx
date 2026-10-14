@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../hooks/useAuth";
-import { Alert } from "../../../components/ui/Alert";
-import { Button } from "../../../components/ui/Button";
-import { Icon } from "../../../components/ui/Icon";
-import { TextField } from "../../../components/ui/TextField";
+import { useAuth } from "../../../shared/hooks/useAuth";
+import { Alert } from "../../../shared/components/ui/Alert";
+import { Button } from "../../../shared/components/ui/Button";
+import { Icon } from "../../../shared/components/ui/Icon";
+import { TextField } from "../../../shared/components/ui/TextField";
 import { AuthError, login } from "../services/auth.service";
 import type { LoginCredentials } from "../types/auth.types";
 
@@ -44,11 +44,7 @@ export function LoginForm() {
           leadingIcon="mail"
           type="email"
           autoComplete="email"
-<<<<<<< HEAD
           placeholder="usuario@gmail.com"
-=======
-          placeholder="usuario@comared.co"
->>>>>>> 9f061a29a35af34636430345815b816071f260b2
           autoFocus
           error={errors.email?.message}
           {...register("email", {

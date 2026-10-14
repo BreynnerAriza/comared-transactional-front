@@ -1,5 +1,5 @@
-import { Icon } from "../../../components/ui/Icon";
-import { formatCOP, formatPhone, formatRelativeDateTime, formatTimestamp } from "../../../utils/format";
+import { Icon } from "../../../shared/components/ui/Icon";
+import { formatCOP, formatPhone, formatRelativeDateTime, formatTimestamp } from "../../../shared/utils/format";
 import type { RechargeHistoryItem } from "../types/recharge.types";
 import { STATUS_STYLES } from "../utils/recharge-status";
 import { OperatorBadge } from "./OperatorBadge";

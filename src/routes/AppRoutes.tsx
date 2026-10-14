@@ -1,7 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
 import LoginPage from "../features/auth/pages/LoginPage";
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../shared/hooks/useAuth";
 
 /** Solo para usuarios autenticados; si no hay sesión envía al login. */
 function ProtectedRoute() {

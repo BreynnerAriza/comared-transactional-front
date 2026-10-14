@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { DashboardLayout } from "../../../components/layout/DashboardLayout";
-import { Alert } from "../../../components/ui/Alert";
-import { Button } from "../../../components/ui/Button";
-import { Icon } from "../../../components/ui/Icon";
-import { useAuth } from "../../../hooks/useAuth";
+import { DashboardLayout } from "../../../shared/components/layout/DashboardLayout";
+import { Alert } from "../../../shared/components/ui/Alert";
+import { Button } from "../../../shared/components/ui/Button";
+import { Icon } from "../../../shared/components/ui/Icon";
+import { useAuth } from "../../../shared/hooks/useAuth";
 import { ReceiptModal } from "../../recharge/components/ReceiptModal";
 import { RechargeTable } from "../../recharge/components/RechargeTable";
 import { TablePagination } from "../../recharge/components/TablePagination";

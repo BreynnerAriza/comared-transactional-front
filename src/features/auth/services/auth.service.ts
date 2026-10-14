@@ -1,4 +1,4 @@
-import { ApiError, apiRequest } from "../../../lib/api-client";
+import { ApiError, apiRequest } from "../../../shared/lib/api-client";
 import type { AuthSession, LoginCredentials } from "../types/auth.types";
 
 /** Error de autenticación con un mensaje apto para mostrar al usuario. */

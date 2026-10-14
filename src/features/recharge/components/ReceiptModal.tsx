@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { Icon } from "../../../components/ui/Icon";
-import { Modal } from "../../../components/ui/Modal";
-import { formatCOP, formatPhone, formatRelativeDateTime } from "../../../utils/format";
+import { Icon } from "../../../shared/components/ui/Icon";
+import { Modal } from "../../../shared/components/ui/Modal";
+import { formatCOP, formatPhone, formatRelativeDateTime } from "../../../shared/utils/format";
 import type { RechargeHistoryItem } from "../types/recharge.types";
 import { STATUS_STYLES } from "../utils/recharge-status";
 

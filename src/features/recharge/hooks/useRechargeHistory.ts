@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { ApiError } from "../../../lib/api-client";
-import { useAuth } from "../../../hooks/useAuth";
+import { ApiError } from "../../../shared/lib/api-client";
+import { useAuth } from "../../../shared/hooks/useAuth";
 import { getRechargeHistory } from "../services/recharge.service";
 import type { RechargeHistoryResponse } from "../types/recharge.types";
 

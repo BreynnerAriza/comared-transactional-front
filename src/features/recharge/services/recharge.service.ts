@@ -1,4 +1,4 @@
-import { apiRequest } from "../../../lib/api-client";
+import { apiRequest } from "../../../shared/lib/api-client";
 import type { RechargeHistoryResponse } from "../types/recharge.types";
 
 /** `GET /recharge/history`: histórico paginado del usuario autenticado (más recientes primero). */

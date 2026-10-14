@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { setUnauthorizedHandler } from "../../../lib/api-client";
+import { setUnauthorizedHandler } from "../../../shared/lib/api-client";
 import { clearSession, loadSession, saveSession } from "../session";
 import type { AuthSession } from "../types/auth.types";
 import { AuthContext } from "./auth-context";

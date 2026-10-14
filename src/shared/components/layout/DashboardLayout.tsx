@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import type { AuthenticatedUser } from "../../features/auth/types/auth.types";
+import type { AuthenticatedUser } from "../../../features/auth/types/auth.types";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 

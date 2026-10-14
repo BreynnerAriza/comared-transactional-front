@@ -1,4 +1,4 @@
-import { Icon } from "../../../components/ui/Icon";
+import { Icon } from "../../../shared/components/ui/Icon";
 import { AuthShowcase } from "../components/AuthShowcase";
 import { LoginForm } from "../components/LoginForm";
 
