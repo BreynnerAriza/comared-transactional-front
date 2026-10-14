@@ -20,6 +20,15 @@ export class ApiError extends Error {
   }
 }
 
+type UnauthorizedHandler = () => void;
+
+let onUnauthorized: UnauthorizedHandler | null = null;
+
+/** Registra qué hacer cuando una petición autenticada recibe 401 (token vencido o inválido). */
+export function setUnauthorizedHandler(handler: UnauthorizedHandler | null): void {
+  onUnauthorized = handler;
+}
+
 const BASE_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
 
 function normalizeMessage(body: ApiErrorResponse | null, fallback: string): string {
@@ -66,6 +75,9 @@ export async function apiRequest<T>(
   const data = await parseBody(response);
 
   if (!response.ok) {
+    // Solo con token: un 401 del login (credenciales incorrectas) no debe cerrar sesión.
+    if (response.status === 401 && token) onUnauthorized?.();
+
     const errorBody = isApiErrorResponse(data) ? data : null;
     throw new ApiError(
       response.status,

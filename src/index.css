@@ -11,6 +11,10 @@
   --color-on-primary: #ffffff;
   --color-primary-fixed: #ffd9e2;
 
+  --color-secondary: #565e74;
+  --color-secondary-container: #dae2fd;
+  --color-on-secondary-fixed-variant: #3f465c;
+
   --color-tertiary-container: #326cf4;
   --color-tertiary-fixed: #dbe1ff;
 
@@ -27,6 +31,10 @@
 
   --color-success: #059669;
   --color-success-surface: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-warning-surface: #fffbeb;
+  --color-info: #2563eb;
+  --color-info-surface: #eff6ff;
   --color-error: #e11d48;
   --color-error-surface: #fff1f2;
 

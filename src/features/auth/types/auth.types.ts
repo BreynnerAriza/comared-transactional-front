@@ -4,9 +4,8 @@ export interface LoginCredentials {
   password: string;
 }
 
-/** Usuario autenticado (`user` en la respuesta de login y respuesta de `GET /auth/me`). */
+/** Usuario autenticado (`user` en la respuesta de `POST /auth/login`; el backend no expone su id). */
 export interface AuthenticatedUser {
-  id: string;
   name: string;
   email: string;
 }

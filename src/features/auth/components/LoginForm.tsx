@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../../hooks/useAuth";
 import { Alert } from "../../../components/ui/Alert";
 import { Button } from "../../../components/ui/Button";
 import { Icon } from "../../../components/ui/Icon";
@@ -8,6 +9,7 @@ import { AuthError, login } from "../services/auth.service";
 import type { LoginCredentials } from "../types/auth.types";
 
 export function LoginForm() {
+  const { signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -22,7 +24,8 @@ export function LoginForm() {
   const onSubmit = async (values: LoginCredentials) => {
     setServerError(null);
     try {
-      await login({ ...values, email: values.email.trim() });
+      const session = await login({ ...values, email: values.email.trim() });
+      signIn(session);
     } catch (err) {
       setServerError(
         err instanceof AuthError
@@ -41,7 +44,7 @@ export function LoginForm() {
           leadingIcon="mail"
           type="email"
           autoComplete="email"
-          placeholder="usuario@puntored.co"
+          placeholder="usuario@comared.co"
           autoFocus
           error={errors.email?.message}
           {...register("email", {
