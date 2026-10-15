@@ -21,8 +21,11 @@ export function DashboardLayout({ user, onLogout, children }: DashboardLayoutPro
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((prev) => !prev)} onLogout={onLogout} />
       <div className={`transition-[padding] duration-200 ${collapsed ? "pl-18" : "pl-65"}`}>
         <Header collapsed={collapsed} userName={user.name} userEmail={user.email} />
-        <main className="min-h-screen w-full pt-16">
-          <div className="mx-auto max-w-420 p-4 sm:p-8 2xl:px-12">{children}</div>
+        {/* Alto del viewport: el contenido se reparte el espacio y cada vista decide qué hace scroll. */}
+        <main className="flex h-dvh w-full flex-col overflow-y-auto pt-16">
+          <div className="mx-auto flex min-h-0 w-full max-w-420 flex-1 flex-col p-4 sm:p-8 2xl:px-12">
+            {children}
+          </div>
         </main>
       </div>
     </div>

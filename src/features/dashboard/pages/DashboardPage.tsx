@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import { DashboardLayout } from "../../../shared/components/layout/DashboardLayout";
 import { Alert } from "../../../shared/components/ui/Alert";
 import { Button } from "../../../shared/components/ui/Button";
-import { Icon } from "../../../shared/components/ui/Icon";
 import { useAuth } from "../../../shared/hooks/useAuth";
 import { BuyRechargeModal } from "../../recharge/components/BuyRechargeModal";
 import { ReceiptModal } from "../../recharge/components/ReceiptModal";
@@ -23,7 +22,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout user={session.user} onLogout={signOut}>
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex min-h-0 w-full flex-1 flex-col gap-6">
         <div className="flex flex-col justify-between gap-4 border-b border-border-subtle/60 pb-2 md:flex-row md:items-center">
           <div className="flex flex-col gap-1">
             <h1 className="text-headline-lg font-bold tracking-tight text-text-primary">
@@ -46,33 +45,9 @@ export default function DashboardPage() {
         </div>
 
         <section
-          aria-labelledby="history-title"
-          className="flex flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface-base shadow-sm"
+          aria-label="Últimas recargas realizadas"
+          className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface-base shadow-sm"
         >
-          <div className="flex flex-col justify-between gap-4 border-b border-border-subtle bg-surface-base p-6 sm:flex-row sm:items-center">
-            <div className="flex flex-col gap-0.5">
-              <div className="flex items-center gap-2">
-                <Icon name="receipt_long" size={22} className="text-primary-container" />
-                <h2 id="history-title" className="text-headline-sm text-text-primary">
-                  Últimas recargas realizadas
-                </h2>
-              </div>
-              <p className="text-body-sm text-text-secondary">
-                Histórico inmediato de órdenes validadas y enviadas al operador.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={refresh}
-              disabled={loading}
-              title="Refrescar lista transaccional"
-              className="flex h-10 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-border-subtle bg-surface-base px-3.5 text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-primary-container disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Icon name="sync" size={18} className={loading ? "animate-spin" : ""} />
-              <span className="hidden text-label-sm md:inline">Actualizar</span>
-            </button>
-          </div>
-
           {error && (
             <div className="border-b border-border-subtle p-6">
               <Alert title="No se pudo cargar el histórico" message={error} />
@@ -83,7 +58,7 @@ export default function DashboardPage() {
             <>
               <div
                 aria-busy={loading}
-                className={`transition-opacity ${loading ? "opacity-50" : "opacity-100"}`}
+                className={`flex min-h-0 flex-col transition-opacity ${loading ? "opacity-50" : "opacity-100"}`}
               >
                 <RechargeTable items={history.data} onViewReceipt={setSelected} />
               </div>
