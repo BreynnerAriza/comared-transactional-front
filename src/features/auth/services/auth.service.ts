@@ -1,7 +1,6 @@
 import { ApiError, apiRequest } from "../../../shared/lib/api-client";
 import type { AuthSession, LoginCredentials } from "../types/auth.types";
 
-/** Error de autenticación con un mensaje apto para mostrar al usuario. */
 export class AuthError extends Error {}
 
 const GENERIC_MESSAGE = "No pudimos iniciar sesión. Intenta nuevamente en unos minutos.";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../shared/hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { Alert } from "../../../shared/components/ui/Alert";
 import { Button } from "../../../shared/components/ui/Button";
 import { Icon } from "../../../shared/components/ui/Icon";

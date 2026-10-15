@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { ApiError } from "../../../shared/lib/api-client";
-import { useAuth } from "../../../shared/hooks/useAuth";
+import { useAuth } from "../../auth";
 import { getRechargeHistory } from "../services/recharge.service";
 import type { RechargeHistoryResponse } from "../types/recharge.types";
 
-/** Opciones de filas por página que ofrece la tabla. */
 export const PAGE_SIZE_OPTIONS = [10, 15, 20] as const;
 export type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 const GENERIC_ERROR = "No pudimos cargar el histórico de recargas. Intenta nuevamente.";
@@ -23,7 +22,6 @@ export function useRechargeHistory() {
   useEffect(() => {
     if (!token) return;
 
-    // Evita que una respuesta antigua pise a una más reciente (cambios rápidos de página).
     let cancelled = false;
 
     getRechargeHistory(token, page, size)
@@ -45,7 +43,6 @@ export function useRechargeHistory() {
     };
   }, [token, page, size, reloadKey]);
 
-  // `loading` se activa en los manejadores de eventos (no dentro del efecto) al pedir otra carga.
   const goToPage = useCallback((next: number) => {
     setLoading(true);
     setPage(next);
@@ -56,7 +53,6 @@ export function useRechargeHistory() {
     setReloadKey((key) => key + 1);
   }, []);
 
-  // Al cambiar el tamaño volvemos a la primera página: la actual podría dejar de existir.
   const changePageSize = useCallback((next: PageSize) => {
     setLoading(true);
     setSize(next);

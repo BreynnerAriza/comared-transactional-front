@@ -3,7 +3,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { Alert } from "../../../shared/components/ui/Alert";
 import { Icon } from "../../../shared/components/ui/Icon";
 import { Modal } from "../../../shared/components/ui/Modal";
-import { useAuth } from "../../../shared/hooks/useAuth";
+import { useAuth } from "../../auth";
 import { formatCOP, formatPhone } from "../../../shared/utils/format";
 import { buyRecharge, RechargeError } from "../services/recharge.service";
 import type { BuyRechargeResponse } from "../types/recharge.types";
@@ -31,26 +31,17 @@ const DEFAULT_VALUES: FormValues = { supplierId: "", cellPhone: "", amount: "" }
 
 const FIELDS_FOR_STEP_1: (keyof FormValues)[] = ["supplierId", "cellPhone", "amount"];
 
-/** 10 dígitos → "312 456 7890" */
 function formatPhoneMask(digits: string): string {
   if (digits.length <= 3) return digits;
   if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
   return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
 }
 
-/** "20000" → "20.000" (locale es-CO con punto como separador de miles) */
 function formatAmountMask(digits: string): string {
   if (!digits) return "";
   return new Intl.NumberFormat("es-CO").format(parseInt(digits, 10));
 }
 
-/**
- * Clases del contenedor de un input según foco y validez.
- * - Enfocado + válido → verde.
- * - Enfocado + aún no válido → rosa (primario).
- * - Sin foco + con error → rojo.
- * - Sin foco → gris neutro.
- */
 function getFieldWrapperClasses({
   focused,
   hasError,
@@ -96,14 +87,12 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
   const selectedSupplier = suppliers?.find((s) => s.id === supplierId) ?? null;
   const amountNumber = amount ? parseInt(amount, 10) : 0;
 
-  // Preselecciona el primer operador cuando llega el catálogo.
   useEffect(() => {
     if (open && suppliers && suppliers.length > 0 && !supplierId) {
       setValue("supplierId", suppliers[0].id, { shouldValidate: true });
     }
   }, [open, suppliers, supplierId, setValue]);
 
-  // Al cerrar limpiamos el estado del formulario para la próxima apertura.
   const handleClose = useCallback(() => {
     reset(DEFAULT_VALUES);
     setServerError(null);
@@ -111,7 +100,6 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
     onClose();
   }, [reset, onClose]);
 
-  // Avanza al paso de confirmación validando antes todos los campos del paso 1.
   const handleContinue = async () => {
     setServerError(null);
     const valid = await trigger(FIELDS_FOR_STEP_1);
@@ -160,7 +148,6 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
       className="max-w-lg"
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col">
-        {/* Encabezado */}
         <div className="flex items-start justify-between border-b border-border-subtle px-6 pb-4 pt-6">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
@@ -189,7 +176,6 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
           </button>
         </div>
 
-        {/* Cuerpo */}
         <div className="flex flex-col gap-4 px-6 py-5">
           {step === 1 && (
             <>
@@ -276,7 +262,6 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex items-center justify-end gap-3 border-t border-border-subtle px-6 py-4">
           {step === 1 && (
             <>
@@ -335,8 +320,6 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
   );
 }
 
-/* ---------- Step indicator ---------- */
-
 function StepIndicator({ step }: { step: Step }) {
   const items: { id: Step; label: string }[] = [
     { id: 1, label: "Datos" },
@@ -377,8 +360,6 @@ function StepIndicator({ step }: { step: Step }) {
   );
 }
 
-/* ---------- Operator selector ---------- */
-
 interface OperatorFieldProps {
   suppliers: { id: string; name: string }[] | null;
   loading: boolean;
@@ -406,7 +387,6 @@ function OperatorField({
         Operador móvil <span className="text-error">*</span>
       </label>
 
-      {/* Input oculto para que RHF registre el campo */}
       <input type="hidden" {...registerProps} value={value} readOnly />
 
       {loading && (
@@ -474,8 +454,6 @@ function OperatorField({
     </div>
   );
 }
-
-/* ---------- Phone field ---------- */
 
 interface PhoneFieldProps {
   value: string;
@@ -572,8 +550,6 @@ function PhoneField({ value, onChange, onBlur, error }: PhoneFieldProps) {
   );
 }
 
-/* ---------- Amount field ---------- */
-
 interface AmountFieldProps {
   value: string;
   onChange: (digits: string) => void;
@@ -644,8 +620,6 @@ function AmountField({ value, onChange, onBlur, error }: AmountFieldProps) {
     </div>
   );
 }
-
-/* ---------- Confirmation summary ---------- */
 
 interface SummaryProps {
   supplierName: string;

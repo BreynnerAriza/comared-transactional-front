@@ -1,7 +1,5 @@
 interface IconProps {
-  /** Nombre del símbolo de Material Symbols Outlined. */
   name: string;
-  /** Tamaño en px. */
   size?: number;
   filled?: boolean;
   className?: string;

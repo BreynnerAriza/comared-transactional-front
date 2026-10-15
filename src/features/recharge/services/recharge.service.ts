@@ -6,7 +6,6 @@ import type {
   Supplier,
 } from "../types/recharge.types";
 
-/** Error de recarga con mensaje apto para mostrar al usuario. */
 export class RechargeError extends Error {
   readonly rechargeId: string | null;
 

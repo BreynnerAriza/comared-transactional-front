@@ -10,7 +10,6 @@ interface ReceiptModalProps {
   onClose: () => void;
 }
 
-/** `20000` → `$ 20.000` (el sufijo COP se pinta aparte, más pequeño). */
 function formatAmount(value: number): string {
   return `$ ${new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(value)}`;
 }
@@ -43,12 +42,10 @@ function Receipt({ item, onClose }: { item: RechargeHistoryItem; onClose: () => 
         </button>
       </div>
 
-      {/* Tirilla */}
       <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-base shadow-md">
         <div className="h-1.5 w-full bg-primary-container" />
 
         <div className="flex flex-col px-5 py-4">
-          {/* Marca */}
           <div className="flex items-center justify-between border-b border-border-subtle pb-3">
             <div className="flex items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-lg bg-primary-container text-[14px] font-bold text-on-primary shadow-sm">
@@ -68,7 +65,6 @@ function Receipt({ item, onClose }: { item: RechargeHistoryItem; onClose: () => 
             </span>
           </div>
 
-          {/* Estado */}
           <div className="mt-3 flex justify-center text-center">
             <div
               className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-3 py-1 ${status.badge}`}
@@ -78,7 +74,6 @@ function Receipt({ item, onClose }: { item: RechargeHistoryItem; onClose: () => 
             </div>
           </div>
 
-          {/* Monto */}
           <div className="my-4 flex flex-col items-center rounded-xl border border-border-subtle bg-surface-subtle px-4 py-2.5 text-center">
             <span className="text-caption uppercase tracking-wider text-text-secondary">
               Valor recargado
@@ -89,14 +84,12 @@ function Receipt({ item, onClose }: { item: RechargeHistoryItem; onClose: () => 
             </div>
           </div>
 
-          {/* Perforación: los semicírculos usan el fondo del modal para simular el corte. */}
           <div className="relative -mx-5 my-1" aria-hidden="true">
             <div className="absolute -left-3 top-1/2 size-6 -translate-y-1/2 rounded-full border-r border-border-subtle bg-surface-subtle" />
             <div className="w-full border-b-2 border-dashed border-border-strong" />
             <div className="absolute -right-3 top-1/2 size-6 -translate-y-1/2 rounded-full border-l border-border-subtle bg-surface-subtle" />
           </div>
 
-          {/* Detalle */}
           <dl className="flex flex-col gap-2 pt-3">
             <Row label="Operador">
               <span className="flex items-center gap-1.5">

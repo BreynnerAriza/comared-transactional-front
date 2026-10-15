@@ -2,12 +2,9 @@ import type { RechargeStatus } from "../types/recharge.types";
 
 interface StatusStyle {
   label: string;
-  /** Clases del chip de estado. */
   badge: string;
   dot: string;
-  /** Clases del chip del mensaje del proveedor. */
   message: string;
-  /** Color del texto de estado en el comprobante. */
   text: string;
 }
 
@@ -62,7 +59,6 @@ const DEFAULT_OPERATOR_STYLE: OperatorStyle = {
   dot: "bg-text-secondary",
 };
 
-/** Color por operador; los operadores que no tienen color propio usan uno neutro. */
 export function getOperatorStyle(supplierName: string): OperatorStyle {
   const key = supplierName.trim().toLowerCase();
   const match = Object.keys(OPERATOR_STYLES).find((name) => key.includes(name));

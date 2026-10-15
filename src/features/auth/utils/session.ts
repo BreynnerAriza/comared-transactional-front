@@ -1,9 +1,7 @@
-import type { AuthSession } from "./types/auth.types";
+import type { AuthSession } from "../types/auth.types";
 
-/** Único lugar que conoce dónde y cómo se persiste la sesión. */
 const STORAGE_KEY = "comared.session";
 
-/** Lee `exp` (segundos) del payload de un JWT, o null si no se puede leer. */
 function getTokenExpiration(token: string): number | null {
   try {
     const payload = token.split(".")[1];
@@ -29,7 +27,7 @@ export function saveSession(session: AuthSession): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
   } catch {
-    // Almacenamiento no disponible (modo privado, cuota): la sesión dura hasta recargar.
+    // ignore
   }
 }
 
@@ -37,11 +35,10 @@ export function clearSession(): void {
   try {
     localStorage.removeItem(STORAGE_KEY);
   } catch {
-    // Nada que limpiar.
+    // ignore
   }
 }
 
-/** Devuelve la sesión guardada si es válida y su token no ha vencido; si no, la descarta. */
 export function loadSession(): AuthSession | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);

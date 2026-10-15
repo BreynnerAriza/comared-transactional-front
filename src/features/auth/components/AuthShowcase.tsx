@@ -2,7 +2,6 @@ import { Icon } from "../../../shared/components/ui/Icon";
 
 const OPERATORS = ["Claro", "Movistar", "Tigo", "WOM"];
 
-/** Panel decorativo de la derecha: solo visible en pantallas grandes. */
 export function AuthShowcase() {
   return (
     <aside

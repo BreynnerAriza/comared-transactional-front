@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { ApiError } from "../../../shared/lib/api-client";
-import { useAuth } from "../../../shared/hooks/useAuth";
+import { useAuth } from "../../auth";
 import { getSuppliers } from "../services/recharge.service";
 import type { Supplier } from "../types/recharge.types";
 
 const GENERIC_ERROR = "No pudimos cargar los operadores. Intenta nuevamente.";
 
-/** Carga el catálogo de operadores móviles cuando `enabled` es true. */
 export function useSuppliers(enabled: boolean) {
   const { session } = useAuth();
   const token = session?.accessToken;
@@ -35,7 +34,6 @@ export function useSuppliers(enabled: boolean) {
     };
   }, [enabled, token]);
 
-  // Mientras el catálogo esté habilitado y no haya resultado ni error, mostramos carga.
   const loading = enabled && !suppliers && !error;
 
   return { suppliers, loading, error };

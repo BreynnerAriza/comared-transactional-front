@@ -4,11 +4,8 @@ import { Icon } from "./Icon";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   loadingText?: string;
-  /** Símbolo de Material Symbols mostrado al inicio. */
   leadingIcon?: string;
-  /** Símbolo de Material Symbols mostrado al final. */
   trailingIcon?: string;
-  /** Ocupa todo el ancho del contenedor (por defecto). */
   fullWidth?: boolean;
   children: ReactNode;
 }

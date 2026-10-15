@@ -4,11 +4,8 @@ import { Icon } from "./Icon";
 interface TextFieldProps extends ComponentProps<"input"> {
   id: string;
   label: string;
-  /** Símbolo de Material Symbols mostrado a la izquierda. */
   leadingIcon?: string;
-  /** Contenido a la derecha del label (ej. enlace de ayuda). */
   labelAside?: ReactNode;
-  /** Elemento interactivo a la derecha del input (ej. mostrar/ocultar). */
   trailingAction?: ReactNode;
   error?: string;
 }

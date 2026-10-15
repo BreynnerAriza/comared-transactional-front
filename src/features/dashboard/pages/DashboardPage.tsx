@@ -4,7 +4,7 @@ import { DashboardLayout } from "../../../shared/components/layout/DashboardLayo
 import { Alert } from "../../../shared/components/ui/Alert";
 import { Button } from "../../../shared/components/ui/Button";
 import { Loader } from "../../../shared/components/ui/Loader";
-import { useAuth } from "../../../shared/hooks/useAuth";
+import { useAuth } from "../../auth";
 import { BuyRechargeModal } from "../../recharge/components/BuyRechargeModal";
 import { ReceiptModal } from "../../recharge/components/ReceiptModal";
 import { RechargeTable } from "../../recharge/components/RechargeTable";
@@ -18,7 +18,6 @@ export default function DashboardPage() {
   const [selected, setSelected] = useState<RechargeHistoryItem | null>(null);
   const [buyOpen, setBuyOpen] = useState(false);
 
-  // Las rutas protegidas garantizan sesión; esto solo estrecha el tipo.
   if (!session) return null;
 
   return (

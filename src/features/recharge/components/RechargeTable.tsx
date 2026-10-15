@@ -110,7 +110,6 @@ export function RechargeTable({ items, onViewReceipt }: RechargeTableProps) {
   );
 }
 
-/** Mensaje del proveedor truncado; si no cabe completo, muestra un tooltip con todo el texto. */
 function ProviderMessage({ message, className }: { message: string; className: string }) {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -126,7 +125,6 @@ function ProviderMessage({ message, className }: { message: string; className: s
       >
         {message}
       </span>
-      {/* A la izquierda, igual que el de "Ver comprobante": arriba lo recortaría el scroll de la tabla. */}
       {showTooltip && (
         <span
           role="tooltip"

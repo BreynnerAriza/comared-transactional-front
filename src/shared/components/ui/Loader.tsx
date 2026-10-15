@@ -1,7 +1,6 @@
 type LoaderSize = "sm" | "md" | "lg";
 
 interface LoaderProps {
-  /** Texto bajo el spinner; también lo anuncian los lectores de pantalla. */
   label?: string;
   size?: LoaderSize;
   /**
@@ -18,7 +17,6 @@ const SPINNER_SIZES: Record<LoaderSize, string> = {
   lg: "size-12 border-4",
 };
 
-/** Spinner con los colores de marca y texto opcional. */
 export function Loader({ label, size = "md", overlay = false, className = "" }: LoaderProps) {
   const position = overlay
     ? "absolute inset-0 z-20 bg-surface-base/70 backdrop-blur-[1px]"
