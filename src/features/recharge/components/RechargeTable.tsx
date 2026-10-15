@@ -21,7 +21,7 @@ const CELL = "whitespace-nowrap px-4 py-3.5 first:pl-6 last:pr-6";
 
 export function RechargeTable({ items, onViewReceipt }: RechargeTableProps) {
   return (
-    <div className="min-h-40 w-full overflow-auto">
+    <div className="min-h-40 w-full flex-1 overflow-auto">
       <table className={TABLE}>
         <thead className={`${ROW_GROUP} sticky top-0 z-10`}>
           <tr className={`${ROW_GROUP} border-b border-border-subtle bg-surface-subtle text-label-sm uppercase tracking-wider text-text-secondary`}>

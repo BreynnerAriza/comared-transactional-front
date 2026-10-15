@@ -13,7 +13,7 @@ import type { RechargeHistoryItem } from "../../recharge/types/recharge.types";
 
 export default function DashboardPage() {
   const { session, signOut } = useAuth();
-  const { history, loading, error, goToPage, refresh } = useRechargeHistory();
+  const { history, loading, error, goToPage, changePageSize, refresh } = useRechargeHistory();
   const [selected, setSelected] = useState<RechargeHistoryItem | null>(null);
   const [buyOpen, setBuyOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export default function DashboardPage() {
 
         <section
           aria-label="Últimas recargas realizadas"
-          className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface-base shadow-sm"
+          className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface-base shadow-sm"
         >
           {error && (
             <div className="border-b border-border-subtle p-6">
@@ -58,11 +58,15 @@ export default function DashboardPage() {
             <>
               <div
                 aria-busy={loading}
-                className={`flex min-h-0 flex-col transition-opacity ${loading ? "opacity-50" : "opacity-100"}`}
+                className={`flex min-h-0 flex-1 flex-col transition-opacity ${loading ? "opacity-50" : "opacity-100"}`}
               >
                 <RechargeTable items={history.data} onViewReceipt={setSelected} />
               </div>
-              <TablePagination pagination={history.pagination} onPageChange={goToPage} />
+              <TablePagination
+                pagination={history.pagination}
+                onPageChange={goToPage}
+                onPageSizeChange={changePageSize}
+              />
             </>
           )}
 

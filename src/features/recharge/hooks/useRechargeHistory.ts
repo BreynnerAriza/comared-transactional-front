@@ -4,7 +4,9 @@ import { useAuth } from "../../../shared/hooks/useAuth";
 import { getRechargeHistory } from "../services/recharge.service";
 import type { RechargeHistoryResponse } from "../types/recharge.types";
 
-const PAGE_SIZE = 10;
+/** Opciones de filas por página que ofrece la tabla. */
+export const PAGE_SIZE_OPTIONS = [10, 15, 20] as const;
+export type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 const GENERIC_ERROR = "No pudimos cargar el histórico de recargas. Intenta nuevamente.";
 
 export function useRechargeHistory() {
@@ -12,6 +14,7 @@ export function useRechargeHistory() {
   const token = session?.accessToken;
 
   const [page, setPage] = useState(1);
+  const [size, setSize] = useState<PageSize>(PAGE_SIZE_OPTIONS[0]);
   const [reloadKey, setReloadKey] = useState(0);
   const [history, setHistory] = useState<RechargeHistoryResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +26,7 @@ export function useRechargeHistory() {
     // Evita que una respuesta antigua pise a una más reciente (cambios rápidos de página).
     let cancelled = false;
 
-    getRechargeHistory(token, page, PAGE_SIZE)
+    getRechargeHistory(token, page, size)
       .then((response) => {
         if (cancelled) return;
         setHistory(response);
@@ -40,7 +43,7 @@ export function useRechargeHistory() {
     return () => {
       cancelled = true;
     };
-  }, [token, page, reloadKey]);
+  }, [token, page, size, reloadKey]);
 
   // `loading` se activa en los manejadores de eventos (no dentro del efecto) al pedir otra carga.
   const goToPage = useCallback((next: number) => {
@@ -53,5 +56,12 @@ export function useRechargeHistory() {
     setReloadKey((key) => key + 1);
   }, []);
 
-  return { history, loading, error, goToPage, refresh };
+  // Al cambiar el tamaño volvemos a la primera página: la actual podría dejar de existir.
+  const changePageSize = useCallback((next: PageSize) => {
+    setLoading(true);
+    setSize(next);
+    setPage(1);
+  }, []);
+
+  return { history, loading, error, goToPage, changePageSize, refresh };
 }

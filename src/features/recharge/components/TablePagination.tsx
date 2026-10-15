@@ -1,9 +1,11 @@
 import { Icon } from "../../../shared/components/ui/Icon";
+import { PAGE_SIZE_OPTIONS, type PageSize } from "../hooks/useRechargeHistory";
 import type { Pagination } from "../types/recharge.types";
 
 interface TablePaginationProps {
   pagination: Pagination;
   onPageChange: (page: number) => void;
+  onPageSizeChange: (size: PageSize) => void;
 }
 
 const PAGE_BUTTON =
@@ -23,7 +25,7 @@ function getVisiblePages(page: number, totalPages: number): (number | "gap")[] {
   return result;
 }
 
-export function TablePagination({ pagination, onPageChange }: TablePaginationProps) {
+export function TablePagination({ pagination, onPageChange, onPageSizeChange }: TablePaginationProps) {
   const { page, size, totalElements, totalPages } = pagination;
   const from = totalElements === 0 ? 0 : (page - 1) * size + 1;
   const to = Math.min(page * size, totalElements);
@@ -38,12 +40,20 @@ export function TablePagination({ pagination, onPageChange }: TablePaginationPro
           </span>{" "}
           de <span className="font-semibold text-text-primary">{totalElements}</span> transacciones
         </span>
-        <span className="hidden items-center gap-1.5 border-l border-border-subtle pl-3 md:flex">
+        <label className="flex items-center gap-1.5 border-l border-border-subtle pl-3">
           <span className="text-[11px]">Filas:</span>
-          <span className="rounded border border-border-subtle bg-surface-base px-1.5 py-0.5 text-[11px] font-semibold text-text-primary">
-            {size}
-          </span>
-        </span>
+          <select
+            value={size}
+            onChange={(event) => onPageSizeChange(Number(event.target.value) as PageSize)}
+            className="cursor-pointer rounded border border-border-subtle bg-surface-base px-1.5 py-0.5 text-[11px] font-semibold text-text-primary focus-visible:outline-2 focus-visible:outline-primary-container"
+          >
+            {PAGE_SIZE_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {totalPages > 1 && (
