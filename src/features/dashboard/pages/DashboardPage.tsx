@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { DashboardLayout } from "../../../shared/components/layout/DashboardLayout";
 import { Alert } from "../../../shared/components/ui/Alert";
 import { Button } from "../../../shared/components/ui/Button";
+import { Loader } from "../../../shared/components/ui/Loader";
 import { useAuth } from "../../../shared/hooks/useAuth";
 import { BuyRechargeModal } from "../../recharge/components/BuyRechargeModal";
 import { ReceiptModal } from "../../recharge/components/ReceiptModal";
@@ -58,9 +59,10 @@ export default function DashboardPage() {
             <>
               <div
                 aria-busy={loading}
-                className={`flex min-h-0 flex-1 flex-col transition-opacity ${loading ? "opacity-50" : "opacity-100"}`}
+                className="relative flex min-h-0 flex-1 flex-col"
               >
                 <RechargeTable items={history.data} onViewReceipt={setSelected} />
+                {loading && <Loader overlay label="Actualizando recargas…" />}
               </div>
               <TablePagination
                 pagination={history.pagination}
@@ -71,9 +73,7 @@ export default function DashboardPage() {
           )}
 
           {!history && loading && (
-            <p role="status" className="px-6 py-12 text-center text-body-md text-text-secondary">
-              Cargando recargas…
-            </p>
+            <Loader size="lg" label="Cargando recargas…" className="flex-1" />
           )}
         </section>
       </div>
