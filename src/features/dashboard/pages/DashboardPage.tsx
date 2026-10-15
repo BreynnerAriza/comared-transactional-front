@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { DashboardLayout } from "../../../shared/components/layout/DashboardLayout";
 import { Alert } from "../../../shared/components/ui/Alert";
 import { Button } from "../../../shared/components/ui/Button";
 import { Icon } from "../../../shared/components/ui/Icon";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import { BuyRechargeModal } from "../../recharge/components/BuyRechargeModal";
 import { ReceiptModal } from "../../recharge/components/ReceiptModal";
 import { RechargeTable } from "../../recharge/components/RechargeTable";
 import { TablePagination } from "../../recharge/components/TablePagination";
@@ -14,6 +16,7 @@ export default function DashboardPage() {
   const { session, signOut } = useAuth();
   const { history, loading, error, goToPage, refresh } = useRechargeHistory();
   const [selected, setSelected] = useState<RechargeHistoryItem | null>(null);
+  const [buyOpen, setBuyOpen] = useState(false);
 
   // Las rutas protegidas garantizan sesión; esto solo estrecha el tipo.
   if (!session) return null;
@@ -31,7 +34,13 @@ export default function DashboardPage() {
               Comared.
             </p>
           </div>
-          <Button type="button" leadingIcon="add_circle" fullWidth={false} className="self-start md:self-auto">
+          <Button
+            type="button"
+            leadingIcon="add_circle"
+            fullWidth={false}
+            className="self-start md:self-auto"
+            onClick={() => setBuyOpen(true)}
+          >
             Nueva recarga
           </Button>
         </div>
@@ -91,6 +100,15 @@ export default function DashboardPage() {
       </div>
 
       <ReceiptModal item={selected} onClose={() => setSelected(null)} />
+      <BuyRechargeModal
+        open={buyOpen}
+        onClose={() => setBuyOpen(false)}
+        onSuccess={() => {
+          setBuyOpen(false);
+          refresh();
+          toast.success("Recarga realizada exitosamente");
+        }}
+      />
     </DashboardLayout>
   );
 }
