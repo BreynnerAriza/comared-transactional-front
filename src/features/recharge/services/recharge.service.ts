@@ -1,0 +1,89 @@
+import { ApiError, apiRequest } from "../../../shared/lib/api-client";
+import type {
+  BuyRechargeRequest,
+  BuyRechargeResponse,
+  RechargeDetail,
+  RechargeHistoryResponse,
+  Supplier,
+} from "../types/recharge.types";
+
+export class RechargeError extends Error {
+  readonly rechargeId: string | null;
+
+  constructor(message: string, rechargeId: string | null = null) {
+    super(message);
+    this.name = "RechargeError";
+    this.rechargeId = rechargeId;
+  }
+}
+
+const GENERIC_BUY_ERROR =
+  "No pudimos procesar la recarga. Intenta nuevamente en unos minutos.";
+
+/** `GET /recharge/history`: histórico paginado del usuario autenticado (más recientes primero). */
+export function getRechargeHistory(
+  token: string,
+  page: number,
+  size: number,
+): Promise<RechargeHistoryResponse> {
+  const query = new URLSearchParams({ page: String(page), size: String(size) });
+  return apiRequest<RechargeHistoryResponse>(`/recharge/history?${query}`, { token });
+}
+
+/** `GET /recharge/:id`: detalle de una recarga del usuario autenticado (404 si no es suya). */
+export function getRechargeById(token: string, id: string): Promise<RechargeDetail> {
+  return apiRequest<RechargeDetail>(`/recharge/${encodeURIComponent(id)}`, { token });
+}
+
+/** `GET /suppliers`: catálogo de operadores móviles disponibles. */
+export function getSuppliers(token: string): Promise<Supplier[]> {
+  return apiRequest<Supplier[]>("/suppliers", { token });
+}
+
+/** `POST /recharge`: procesa la compra de una recarga para el usuario autenticado. */
+export async function buyRecharge(
+  token: string,
+  payload: BuyRechargeRequest,
+  idempotencyKey: string,
+): Promise<BuyRechargeResponse> {
+  try {
+    return await apiRequest<BuyRechargeResponse>("/recharge", {
+      method: "POST",
+      body: payload,
+      token,
+      headers: { "Idempotency-Key": idempotencyKey },
+    });
+  } catch (err) {
+    if (!(err instanceof ApiError)) throw err;
+
+    const rechargeId = extractRechargeId(err);
+    const code = extractErrorCode(err);
+
+    if (err.status === 409) {
+      throw new RechargeError(
+        "Tu recarga ya se está procesando. Espera un momento y consulta el historial.",
+      );
+    }
+    if (code === "IDEMPOTENCY_KEY_REUSED") {
+      throw new RechargeError("Los datos de la recarga cambiaron. Vuelve a confirmarla.");
+    }
+
+    if (err.status === 422) throw new RechargeError(err.message, rechargeId);
+    if (err.status === 502) throw new RechargeError(err.message, rechargeId);
+    if (err.status === 400) throw new RechargeError("Verifica los datos de la recarga.");
+    if (err.status === 404) throw new RechargeError("El operador seleccionado no está disponible.");
+    if (err.status === 0) throw new RechargeError(err.message);
+    throw new RechargeError(GENERIC_BUY_ERROR);
+  }
+}
+
+function extractErrorCode(err: ApiError): string | null {
+  const body = err.body as { code?: unknown } | null;
+  return typeof body?.code === "string" ? body.code : null;
+}
+
+/** El backend devuelve `rechargeId` en el body del error para 422/502. */
+function extractRechargeId(err: ApiError): string | null {
+  const body = err.body as { rechargeId?: unknown } | null;
+  return typeof body?.rechargeId === "string" ? body.rechargeId : null;
+}

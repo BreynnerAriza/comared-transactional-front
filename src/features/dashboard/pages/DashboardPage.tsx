@@ -1,0 +1,92 @@
+import { useState } from "react";
+import { toast } from "sonner";
+import { DashboardLayout } from "../../../shared/components/layout/DashboardLayout";
+import { Alert } from "../../../shared/components/ui/Alert";
+import { Button } from "../../../shared/components/ui/Button";
+import { Loader } from "../../../shared/components/ui/Loader";
+import { useAuth } from "../../auth";
+import { BuyRechargeModal } from "../../recharge/components/BuyRechargeModal";
+import { ReceiptModal } from "../../recharge/components/ReceiptModal";
+import { RechargeTable } from "../../recharge/components/RechargeTable";
+import { TablePagination } from "../../recharge/components/TablePagination";
+import { useRechargeHistory } from "../../recharge/hooks/useRechargeHistory";
+
+export default function DashboardPage() {
+  const { session, signOut } = useAuth();
+  const { history, loading, error, goToPage, changePageSize, refresh } = useRechargeHistory();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [buyOpen, setBuyOpen] = useState(false);
+
+  if (!session) return null;
+
+  return (
+    <DashboardLayout user={session.user} onLogout={signOut}>
+      <div className="flex min-h-0 w-full flex-1 flex-col gap-6">
+        <div className="flex flex-col justify-between gap-4 border-b border-border-subtle/60 pb-2 md:flex-row md:items-center">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-headline-lg font-bold tracking-tight text-text-primary">
+              Recargas móviles
+            </h1>
+            <p className="max-w-2xl text-body-md text-text-secondary">
+              Realiza recargas en línea y consulta las últimas transacciones procesadas en el core de
+              Comared.
+            </p>
+          </div>
+          <Button
+            type="button"
+            leadingIcon="add_circle"
+            fullWidth={false}
+            className="self-start md:self-auto"
+            onClick={() => setBuyOpen(true)}
+          >
+            Nueva recarga
+          </Button>
+        </div>
+
+        <section
+          aria-label="Últimas recargas realizadas"
+          className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface-base shadow-sm"
+        >
+          {error && (
+            <div className="border-b border-border-subtle p-6">
+              <Alert title="No se pudo cargar el histórico" message={error} />
+            </div>
+          )}
+
+          {history && (
+            <>
+              <div
+                aria-busy={loading}
+                className="relative flex min-h-0 flex-1 flex-col"
+              >
+                <RechargeTable items={history.data} onViewReceipt={(item) => setSelectedId(item.id)} />
+                {loading && <Loader overlay label="Actualizando recargas…" />}
+              </div>
+              <TablePagination
+                pagination={history.pagination}
+                onPageChange={goToPage}
+                onPageSizeChange={changePageSize}
+              />
+            </>
+          )}
+
+          {!history && loading && (
+            <Loader size="lg" label="Cargando recargas…" className="flex-1" />
+          )}
+        </section>
+      </div>
+
+      <ReceiptModal rechargeId={selectedId} onClose={() => setSelectedId(null)} />
+      <BuyRechargeModal
+        open={buyOpen}
+        onClose={() => setBuyOpen(false)}
+        onSuccess={(response) => {
+          setBuyOpen(false);
+          setSelectedId(response.rechargeId);
+          refresh();
+          toast.success("Recarga realizada exitosamente");
+        }}
+      />
+    </DashboardLayout>
+  );
+}

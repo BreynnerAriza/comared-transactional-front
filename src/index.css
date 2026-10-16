@@ -1,1 +1,95 @@
 @import "tailwindcss";
+
+/* Design tokens — Transactional Fintech Clean (references/DESIGN_GUIDE.md) */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #b70062;
+  --color-primary-container: #e4007c;
+  --color-primary-hover: #d80070;
+  --color-primary-active: #c20063;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #ffd9e2;
+
+  --color-secondary: #565e74;
+  --color-secondary-container: #dae2fd;
+  --color-on-secondary-fixed-variant: #3f465c;
+
+  --color-tertiary-container: #326cf4;
+  --color-tertiary-fixed: #dbe1ff;
+
+  --color-on-surface-variant: #5a3f47;
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+
+  --color-surface-base: #ffffff;
+  --color-surface-subtle: #f8fafc;
+  --color-border-subtle: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+
+  --color-success: #059669;
+  --color-success-surface: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-warning-surface: #fffbeb;
+  --color-info: #2563eb;
+  --color-info-surface: #eff6ff;
+  --color-error: #e11d48;
+  --color-error-surface: #fff1f2;
+
+  --text-headline-sm: 20px;
+  --text-headline-sm--line-height: 28px;
+  --text-headline-sm--font-weight: 600;
+
+  --text-headline-lg: 30px;
+  --text-headline-lg--line-height: 38px;
+  --text-headline-lg--letter-spacing: -0.015em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 24px;
+  --text-body-lg--font-weight: 400;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
+
+  --text-currency-table: 15px;
+  --text-currency-table--line-height: 20px;
+  --text-currency-table--letter-spacing: -0.01em;
+  --text-currency-table--font-weight: 600;
+
+  --text-body-md: 14px;
+  --text-body-md--line-height: 20px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 12px;
+  --text-body-sm--line-height: 16px;
+  --text-body-sm--font-weight: 400;
+
+  --text-label-md: 14px;
+  --text-label-md--line-height: 20px;
+  --text-label-md--font-weight: 500;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--letter-spacing: 0.02em;
+  --text-label-sm--font-weight: 600;
+
+  --text-caption: 11px;
+  --text-caption--line-height: 14px;
+  --text-caption--letter-spacing: 0.025em;
+  --text-caption--font-weight: 500;
+}
+
+@layer base {
+  body {
+    @apply bg-surface-subtle font-sans text-body-md text-text-primary antialiased;
+  }
+}
+
+.material-symbols-outlined {
+  user-select: none;
+}
