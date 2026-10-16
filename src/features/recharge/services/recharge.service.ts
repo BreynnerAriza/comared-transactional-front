@@ -2,6 +2,7 @@ import { ApiError, apiRequest } from "../../../shared/lib/api-client";
 import type {
   BuyRechargeRequest,
   BuyRechargeResponse,
+  RechargeDetail,
   RechargeHistoryResponse,
   Supplier,
 } from "../types/recharge.types";
@@ -27,6 +28,11 @@ export function getRechargeHistory(
 ): Promise<RechargeHistoryResponse> {
   const query = new URLSearchParams({ page: String(page), size: String(size) });
   return apiRequest<RechargeHistoryResponse>(`/recharge/history?${query}`, { token });
+}
+
+/** `GET /recharge/:id`: detalle de una recarga del usuario autenticado (404 si no es suya). */
+export function getRechargeById(token: string, id: string): Promise<RechargeDetail> {
+  return apiRequest<RechargeDetail>(`/recharge/${encodeURIComponent(id)}`, { token });
 }
 
 /** `GET /suppliers`: catálogo de operadores móviles disponibles. */

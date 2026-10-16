@@ -10,12 +10,11 @@ import { ReceiptModal } from "../../recharge/components/ReceiptModal";
 import { RechargeTable } from "../../recharge/components/RechargeTable";
 import { TablePagination } from "../../recharge/components/TablePagination";
 import { useRechargeHistory } from "../../recharge/hooks/useRechargeHistory";
-import type { RechargeHistoryItem } from "../../recharge/types/recharge.types";
 
 export default function DashboardPage() {
   const { session, signOut } = useAuth();
   const { history, loading, error, goToPage, changePageSize, refresh } = useRechargeHistory();
-  const [selected, setSelected] = useState<RechargeHistoryItem | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [buyOpen, setBuyOpen] = useState(false);
 
   if (!session) return null;
@@ -60,7 +59,7 @@ export default function DashboardPage() {
                 aria-busy={loading}
                 className="relative flex min-h-0 flex-1 flex-col"
               >
-                <RechargeTable items={history.data} onViewReceipt={setSelected} />
+                <RechargeTable items={history.data} onViewReceipt={(item) => setSelectedId(item.id)} />
                 {loading && <Loader overlay label="Actualizando recargas…" />}
               </div>
               <TablePagination
@@ -77,7 +76,7 @@ export default function DashboardPage() {
         </section>
       </div>
 
-      <ReceiptModal item={selected} onClose={() => setSelected(null)} />
+      <ReceiptModal rechargeId={selectedId} onClose={() => setSelectedId(null)} />
       <BuyRechargeModal
         open={buyOpen}
         onClose={() => setBuyOpen(false)}

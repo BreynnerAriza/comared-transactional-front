@@ -11,6 +11,19 @@ export interface RechargeHistoryItem {
   createdAt: string;
 }
 
+export interface RechargeDetail {
+  id: string;
+  supplierId: string;
+  supplierName: string;
+  cellPhone: string;
+  amount: number;
+  status: RechargeStatus;
+  transactionalId: string | null;
+  providerMessage: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Pagination {
   page: number;
   size: number;
