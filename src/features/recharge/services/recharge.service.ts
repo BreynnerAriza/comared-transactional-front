@@ -17,7 +17,7 @@ export class RechargeError extends Error {
   }
 }
 
-const GENERIC_BUY_ERROR =
+export const GENERIC_BUY_ERROR =
   "No pudimos procesar la recarga. Intenta nuevamente en unos minutos.";
 
 /** `GET /recharge/history`: histórico paginado del usuario autenticado (más recientes primero). */

@@ -1,4 +1,5 @@
 import { Icon } from "./Icon";
+import { IconButton } from "./IconButton";
 
 interface AlertProps {
   title: string;
@@ -20,14 +21,7 @@ export function Alert({ title, message, onDismiss }: AlertProps) {
         </div>
       </div>
       {onDismiss && (
-        <button
-          type="button"
-          aria-label="Cerrar notificación"
-          onClick={onDismiss}
-          className="cursor-pointer rounded p-0.5 text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-primary-container"
-        >
-          <Icon name="close" size={18} />
-        </button>
+        <IconButton icon="close" label="Cerrar notificación" iconSize={18} onClick={onDismiss} />
       )}
     </div>
   );

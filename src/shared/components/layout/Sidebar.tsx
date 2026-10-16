@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import { Icon } from "../ui/Icon";
+import { IconButton } from "../ui/IconButton";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -28,15 +29,12 @@ export function Sidebar({ collapsed, onToggle, onLogout }: SidebarProps) {
               <span className="text-[18px] font-bold tracking-tight text-text-primary">Comared</span>
             </div>
           )}
-          <button
-            type="button"
-            aria-label={collapsed ? "Expandir menú lateral" : "Colapsar menú lateral"}
+          <IconButton
+            icon={collapsed ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left"}
+            label={collapsed ? "Expandir menú lateral" : "Colapsar menú lateral"}
             aria-expanded={!collapsed}
             onClick={onToggle}
-            className="cursor-pointer rounded-lg p-1.5 text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-primary-container"
-          >
-            <Icon name={collapsed ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left"} />
-          </button>
+          />
         </div>
 
         {!collapsed && (

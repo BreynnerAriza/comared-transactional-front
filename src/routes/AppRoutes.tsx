@@ -1,7 +1,6 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
-import LoginPage from "../features/auth/pages/LoginPage";
-import DashboardPage from "../features/dashboard/pages/DashboardPage";
-import { useAuth } from "../features/auth";
+import { LoginPage, useAuth } from "../features/auth";
+import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 
 function ProtectedRoute() {
   const { session } = useAuth();

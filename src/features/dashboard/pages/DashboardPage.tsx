@@ -5,13 +5,15 @@ import { Alert } from "../../../shared/components/ui/Alert";
 import { Button } from "../../../shared/components/ui/Button";
 import { Loader } from "../../../shared/components/ui/Loader";
 import { useAuth } from "../../auth";
-import { BuyRechargeModal } from "../../recharge/components/BuyRechargeModal";
-import { ReceiptModal } from "../../recharge/components/ReceiptModal";
-import { RechargeTable } from "../../recharge/components/RechargeTable";
-import { TablePagination } from "../../recharge/components/TablePagination";
-import { useRechargeHistory } from "../../recharge/hooks/useRechargeHistory";
+import {
+  BuyRechargeModal,
+  ReceiptModal,
+  RechargeTable,
+  TablePagination,
+  useRechargeHistory,
+} from "../../recharge";
 
-export default function DashboardPage() {
+export function DashboardPage() {
   const { session, signOut } = useAuth();
   const { history, loading, error, goToPage, changePageSize, refresh } = useRechargeHistory();
   const [selectedId, setSelectedId] = useState<string | null>(null);

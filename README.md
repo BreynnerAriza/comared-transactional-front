@@ -1,75 +1,90 @@
-# React + TypeScript + Vite
+# Comared · Portal transaccional (frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portal web para iniciar sesión, comprar recargas móviles y consultar el histórico de
+transacciones con su comprobante.
 
-Currently, two official plugins are available:
+**Stack:** React 19 · TypeScript · Vite · Tailwind CSS 4 · React Router · React Hook Form ·
+Vitest
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Requisitos
 
-## React Compiler
+- Node.js 20 o superior
+- El backend de Comared corriendo (por defecto en `http://localhost:3000`)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Puesta en marcha
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+cp .env.example .env.local   # ajusta VITE_API_URL si el backend corre en otra URL
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+La app queda en `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Variable       | Descripción                  | Ejemplo                 |
+| -------------- | ---------------------------- | ----------------------- |
+| `VITE_API_URL` | URL base del backend (API)   | `http://localhost:3000` |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Scripts
+
+| Comando           | Qué hace                                         |
+| ----------------- | ------------------------------------------------ |
+| `npm run dev`     | Servidor de desarrollo con recarga en caliente   |
+| `npm run build`   | Revisa tipos (`tsc`) y genera la build en `dist/` |
+| `npm run preview` | Sirve la build de `dist/` localmente             |
+| `npm run lint`    | Revisa el código con ESLint                      |
+| `npm test`        | Ejecuta los tests unitarios (Vitest)             |
+
+Para ver cada test por nombre: `npx vitest run --reporter=verbose`. En modo watch: `npx vitest`.
+
+## Estructura
+
+El código se organiza por **features** (funcionalidades). Cada feature agrupa todo lo suyo y
+expone lo que usan las demás desde su `index.ts`.
 
 ```
+src/
+├── features/
+│   ├── auth/              Login y sesión
+│   │   ├── components/    LoginForm, AuthShowcase
+│   │   ├── context/       AuthProvider: guarda la sesión y la comparte con la app
+│   │   ├── hooks/         useAuth()
+│   │   ├── pages/         LoginPage
+│   │   ├── services/      Llamadas al backend (login)
+│   │   ├── types/
+│   │   └── utils/         Guardar/leer la sesión en localStorage
+│   ├── dashboard/
+│   │   └── pages/         DashboardPage: tabla de recargas + modales
+│   └── recharge/          Recargas móviles
+│       ├── components/
+│       │   ├── buy-recharge/   Modal de compra (paso 1: datos, paso 2: confirmación)
+│       │   ├── ReceiptModal    Comprobante de una recarga
+│       │   └── RechargeTable, TablePagination, badges…
+│       ├── hooks/         useRechargeHistory, useRechargeDetail, useSuppliers
+│       ├── services/      Llamadas al backend (histórico, detalle, operadores, compra)
+│       ├── types/
+│       └── utils/         Validaciones y estilos por estado/operador
+├── routes/                Rutas públicas y protegidas
+└── shared/                Lo que usa más de una feature
+    ├── components/ui/     Button, IconButton, TextField, Modal, Alert, Loader, Icon
+    ├── components/layout/ DashboardLayout, Header, Sidebar
+    ├── lib/api-client.ts  fetch al backend + manejo de errores
+    ├── test/              Utilidades para los tests
+    └── utils/format.ts    Formato de moneda, teléfono y fechas
+```
+
+### Flujo de datos
+
+```
+Componente  →  hook (useRechargeHistory…)  →  service (recharge.service)  →  api-client  →  backend
+```
+
+- **services**: solo hablan con el backend y traducen los errores HTTP a mensajes para el usuario.
+- **hooks**: guardan el estado de la petición (`loading`, `error`, datos) para los componentes.
+- **components**: solo muestran datos y reaccionan a lo que hace el usuario.
+
+## Tests
+
+Los tests van junto al archivo que prueban (`recharge.service.ts` → `recharge.service.test.ts`).
+Cubren el cliente HTTP, los servicios y las validaciones del formulario de recarga. `fetch` se
+simula, así que no necesitan el backend corriendo.

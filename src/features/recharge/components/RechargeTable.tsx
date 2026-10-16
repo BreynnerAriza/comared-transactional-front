@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Icon } from "../../../shared/components/ui/Icon";
 import { formatCOP, formatPhone, formatRelativeDateTime, formatTimestamp } from "../../../shared/utils/format";
 import type { RechargeHistoryItem } from "../types/recharge.types";
-import { STATUS_STYLES } from "../utils/recharge-status";
+import { STATUS_STYLES } from "../utils/status-styles";
 import { OperatorBadge } from "./OperatorBadge";
 import { StatusBadge } from "./StatusBadge";
 
@@ -11,10 +11,6 @@ interface RechargeTableProps {
   onViewReceipt: (item: RechargeHistoryItem) => void;
 }
 
-/**
- * La tabla usa grid con columnas al ancho de su contenido y `justify-between`: el espacio
- * sobrante se reparte por igual entre columnas. `subgrid` mantiene alineadas las filas.
- */
 const TABLE = "grid w-full min-w-max grid-cols-[repeat(8,max-content)] justify-between text-left";
 const ROW_GROUP = "col-span-full grid grid-cols-subgrid items-center";
 const CELL = "whitespace-nowrap px-4 py-3.5 first:pl-6 last:pr-6";
@@ -86,7 +82,6 @@ export function RechargeTable({ items, onViewReceipt }: RechargeTableProps) {
                   className="group relative inline-flex cursor-pointer items-center justify-center rounded-lg border border-border-subtle bg-surface-base p-1.5 text-text-secondary shadow-2xs transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-primary-container"
                 >
                   <Icon name="receipt" size={18} />
-                  {/* Tooltip a la izquierda: arriba quedaría recortado por el scroll de la tabla. */}
                   <span
                     role="tooltip"
                     className="pointer-events-none absolute right-full top-1/2 mr-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-slate-800 px-2 py-1 text-caption font-medium text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"

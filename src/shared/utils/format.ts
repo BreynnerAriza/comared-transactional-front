@@ -1,8 +1,13 @@
 const LOCALE = "es-CO";
 
+/** `20000` → `20.000` */
+export function formatNumber(value: number): string {
+  return new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0 }).format(value);
+}
+
 /** `20000` → `$ 20.000 COP` */
 export function formatCOP(value: number): string {
-  return `$ ${new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0 }).format(value)} COP`;
+  return `$ ${formatNumber(value)} COP`;
 }
 
 /** `3124567890` → `+57 312 456 7890`. Si no tiene 10 dígitos se devuelve tal cual. */

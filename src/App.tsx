@@ -1,9 +1,9 @@
 import { BrowserRouter } from "react-router";
 import { Toaster } from "sonner";
-import { AuthProvider } from "./features/auth/context/AuthProvider";
+import { AuthProvider } from "./features/auth";
 import { AppRoutes } from "./routes/AppRoutes";
 
-function App() {
+export function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -13,5 +13,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

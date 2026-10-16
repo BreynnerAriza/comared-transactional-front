@@ -3,10 +3,6 @@ type LoaderSize = "sm" | "md" | "lg";
 interface LoaderProps {
   label?: string;
   size?: LoaderSize;
-  /**
-   * Cubre al contenedor padre (que debe ser `relative`) con un velo translúcido.
-   * Útil para recargas sobre contenido ya visible, como una tabla al cambiar de página.
-   */
   overlay?: boolean;
   className?: string;
 }

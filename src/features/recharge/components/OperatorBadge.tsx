@@ -1,4 +1,4 @@
-import { getOperatorStyle } from "../utils/recharge-status";
+import { getOperatorStyle } from "../utils/operator-styles";
 
 export function OperatorBadge({ name }: { name: string }) {
   const style = getOperatorStyle(name);

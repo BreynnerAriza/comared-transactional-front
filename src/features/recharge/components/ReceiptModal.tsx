@@ -1,20 +1,18 @@
 import type { ReactNode } from "react";
 import { Alert } from "../../../shared/components/ui/Alert";
-import { Icon } from "../../../shared/components/ui/Icon";
+import { Button } from "../../../shared/components/ui/Button";
+import { IconButton } from "../../../shared/components/ui/IconButton";
 import { Loader } from "../../../shared/components/ui/Loader";
 import { Modal } from "../../../shared/components/ui/Modal";
-import { formatPhone, formatTimestamp } from "../../../shared/utils/format";
+import { formatNumber, formatPhone, formatTimestamp } from "../../../shared/utils/format";
 import { useRechargeDetail } from "../hooks/useRechargeDetail";
 import type { RechargeDetail } from "../types/recharge.types";
-import { getOperatorStyle, STATUS_STYLES } from "../utils/recharge-status";
+import { getOperatorStyle } from "../utils/operator-styles";
+import { STATUS_STYLES } from "../utils/status-styles";
 
 interface ReceiptModalProps {
   rechargeId: string | null;
   onClose: () => void;
-}
-
-function formatAmount(value: number): string {
-  return `$ ${new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(value)}`;
 }
 
 export function ReceiptModal({ rechargeId, onClose }: ReceiptModalProps) {
@@ -25,10 +23,6 @@ export function ReceiptModal({ rechargeId, onClose }: ReceiptModalProps) {
   );
 }
 
-/**
- * Se monta en cada apertura del modal, así el comprobante siempre refleja el estado
- * actual de la recarga en el backend y no el de la fila de la tabla.
- */
 function ReceiptContent({ rechargeId, onClose }: { rechargeId: string; onClose: () => void }) {
   const { detail, loading, error } = useRechargeDetail(rechargeId);
 
@@ -38,28 +32,16 @@ function ReceiptContent({ rechargeId, onClose }: { rechargeId: string; onClose: 
         <h2 id="receipt-title" className="text-label-md font-semibold text-text-primary">
           Comprobante de recarga
         </h2>
-        <button
-          type="button"
-          aria-label="Cerrar comprobante"
-          onClick={onClose}
-          className="cursor-pointer rounded-lg p-1 text-text-secondary transition-colors hover:bg-surface-container hover:text-text-primary focus-visible:outline-2 focus-visible:outline-primary-container"
-        >
-          <Icon name="close" />
-        </button>
+        <IconButton icon="close" label="Cerrar comprobante" onClick={onClose} />
       </div>
 
       {loading && <Loader label="Cargando comprobante…" />}
       {error && <Alert title="No se pudo cargar el comprobante" message={error} />}
       {detail && <Receipt detail={detail} />}
 
-      <button
-        type="button"
-        onClick={onClose}
-        autoFocus
-        className="h-10 w-full cursor-pointer rounded-lg bg-primary-container text-label-md font-semibold text-on-primary shadow-sm transition-colors hover:bg-primary-hover active:bg-primary-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2"
-      >
+      <Button onClick={onClose} autoFocus>
         Aceptar
-      </button>
+      </Button>
     </div>
   );
 }
@@ -106,7 +88,7 @@ function Receipt({ detail }: { detail: RechargeDetail }) {
             Valor recargado
           </span>
           <div className="text-[28px] leading-9 font-bold tracking-tight tabular-nums text-text-primary">
-            {formatAmount(detail.amount)}{" "}
+            $ {formatNumber(detail.amount)}{" "}
             <span className="text-label-md font-medium text-text-secondary">COP</span>
           </div>
         </div>
