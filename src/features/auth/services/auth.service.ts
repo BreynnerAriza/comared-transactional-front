@@ -3,7 +3,7 @@ import type { AuthSession, LoginCredentials } from "../types/auth.types";
 
 export class AuthError extends Error {}
 
-const GENERIC_MESSAGE = "No pudimos iniciar sesión. Intenta nuevamente en unos minutos.";
+export const GENERIC_LOGIN_ERROR = "No pudimos iniciar sesión. Intenta nuevamente en unos minutos.";
 
 export async function login(credentials: LoginCredentials): Promise<AuthSession> {
   try {
@@ -16,7 +16,6 @@ export async function login(credentials: LoginCredentials): Promise<AuthSession>
     if (err.status === 401) throw new AuthError(err.message);
     if (err.status === 400) throw new AuthError("Verifica que tus datos sean válidos.");
     if (err.status === 0) throw new AuthError(err.message);
-    throw new AuthError(GENERIC_MESSAGE);
+    throw new AuthError(GENERIC_LOGIN_ERROR);
   }
-  
 }

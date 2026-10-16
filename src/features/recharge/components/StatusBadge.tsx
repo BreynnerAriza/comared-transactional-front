@@ -1,5 +1,5 @@
 import type { RechargeStatus } from "../types/recharge.types";
-import { STATUS_STYLES } from "../utils/recharge-status";
+import { STATUS_STYLES } from "../utils/status-styles";
 
 export function StatusBadge({ status }: { status: RechargeStatus }) {
   const style = STATUS_STYLES[status];

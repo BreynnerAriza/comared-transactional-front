@@ -43,21 +43,29 @@ export function useRechargeHistory() {
     };
   }, [token, page, size, reloadKey]);
 
-  const goToPage = useCallback((next: number) => {
-    setLoading(true);
-    setPage(next);
-  }, []);
+  const goToPage = useCallback(
+    (next: number) => {
+      if (next === page) return;
+      setLoading(true);
+      setPage(next);
+    },
+    [page],
+  );
 
   const refresh = useCallback(() => {
     setLoading(true);
     setReloadKey((key) => key + 1);
   }, []);
 
-  const changePageSize = useCallback((next: PageSize) => {
-    setLoading(true);
-    setSize(next);
-    setPage(1);
-  }, []);
+  const changePageSize = useCallback(
+    (next: PageSize) => {
+      if (next === size) return;
+      setLoading(true);
+      setSize(next);
+      setPage(1);
+    },
+    [size],
+  );
 
   return { history, loading, error, goToPage, changePageSize, refresh };
 }

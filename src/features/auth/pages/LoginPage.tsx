@@ -2,7 +2,7 @@ import { Icon } from "../../../shared/components/ui/Icon";
 import { AuthShowcase } from "../components/AuthShowcase";
 import { LoginForm } from "../components/LoginForm";
 
-export default function LoginPage() {
+export function LoginPage() {
   return (
     <main className="flex min-h-screen w-full items-center justify-center p-4">
       <div className="mx-auto my-auto flex min-h-180 w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-surface-base shadow-xl lg:flex-row">
