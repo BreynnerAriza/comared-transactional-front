@@ -44,17 +44,29 @@ export function getSuppliers(token: string): Promise<Supplier[]> {
 export async function buyRecharge(
   token: string,
   payload: BuyRechargeRequest,
+  idempotencyKey: string,
 ): Promise<BuyRechargeResponse> {
   try {
     return await apiRequest<BuyRechargeResponse>("/recharge", {
       method: "POST",
       body: payload,
       token,
+      headers: { "Idempotency-Key": idempotencyKey },
     });
   } catch (err) {
     if (!(err instanceof ApiError)) throw err;
 
     const rechargeId = extractRechargeId(err);
+    const code = extractErrorCode(err);
+
+    if (err.status === 409) {
+      throw new RechargeError(
+        "Tu recarga ya se está procesando. Espera un momento y consulta el historial.",
+      );
+    }
+    if (code === "IDEMPOTENCY_KEY_REUSED") {
+      throw new RechargeError("Los datos de la recarga cambiaron. Vuelve a confirmarla.");
+    }
 
     if (err.status === 422) throw new RechargeError(err.message, rechargeId);
     if (err.status === 502) throw new RechargeError(err.message, rechargeId);
@@ -63,6 +75,11 @@ export async function buyRecharge(
     if (err.status === 0) throw new RechargeError(err.message);
     throw new RechargeError(GENERIC_BUY_ERROR);
   }
+}
+
+function extractErrorCode(err: ApiError): string | null {
+  const body = err.body as { code?: unknown } | null;
+  return typeof body?.code === "string" ? body.code : null;
 }
 
 /** El backend devuelve `rechargeId` en el body del error para 422/502. */

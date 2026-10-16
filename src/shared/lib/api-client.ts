@@ -54,9 +54,14 @@ function isApiErrorResponse(value: unknown): value is ApiErrorResponse {
 
 export async function apiRequest<T>(
   path: string,
-  options: { method?: "GET" | "POST"; body?: unknown; token?: string } = {},
+  options: {
+    method?: "GET" | "POST";
+    body?: unknown;
+    token?: string;
+    headers?: Record<string, string>;
+  } = {},
 ): Promise<T> {
-  const { method = "GET", body, token } = options;
+  const { method = "GET", body, token, headers } = options;
 
   let response: Response;
   try {
@@ -65,6 +70,7 @@ export async function apiRequest<T>(
       headers: {
         ...(body !== undefined && { "Content-Type": "application/json" }),
         ...(token && { Authorization: `Bearer ${token}` }),
+        ...headers,
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
