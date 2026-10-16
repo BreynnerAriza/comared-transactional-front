@@ -80,8 +80,9 @@ export default function DashboardPage() {
       <BuyRechargeModal
         open={buyOpen}
         onClose={() => setBuyOpen(false)}
-        onSuccess={() => {
+        onSuccess={(response) => {
           setBuyOpen(false);
+          setSelectedId(response.rechargeId);
           refresh();
           toast.success("Recarga realizada exitosamente");
         }}

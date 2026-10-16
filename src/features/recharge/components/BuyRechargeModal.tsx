@@ -66,7 +66,7 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
   const [serverError, setServerError] = useState<string | null>(null);
   const [step, setStep] = useState<Step>(1);
   const firstFieldRef = useRef<HTMLButtonElement | null>(null);
-  const idempotencyKeyRef = useRef(crypto.randomUUID());
+  const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
 
   const {
     register,
@@ -98,7 +98,7 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
     reset(DEFAULT_VALUES);
     setServerError(null);
     setStep(1);
-    idempotencyKeyRef.current = crypto.randomUUID();
+    setIdempotencyKey(crypto.randomUUID());
     onClose();
   }, [reset, onClose]);
 
@@ -110,7 +110,7 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
 
   const handleBack = () => {
     setServerError(null);
-    idempotencyKeyRef.current = crypto.randomUUID();
+    setIdempotencyKey(crypto.randomUUID());
     setStep(1);
   };
 
@@ -132,9 +132,9 @@ export function BuyRechargeModal({ open, onClose, onSuccess }: BuyRechargeModalP
           value: parseInt(values.amount, 10),
           cellPhone: values.cellPhone,
         },
-        idempotencyKeyRef.current,
+        idempotencyKey,
       );
-      idempotencyKeyRef.current = crypto.randomUUID();
+      setIdempotencyKey(crypto.randomUUID());
       reset(DEFAULT_VALUES);
       setStep(1);
       onSuccess(response);
